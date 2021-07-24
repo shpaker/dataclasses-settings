@@ -8,7 +8,7 @@ BOOL_TRUE_VALUES = ("+", "y", "yes", "true", "on")
 BOOL_FALSE_VALUES = ("-", "n", "no", "false", "off")
 
 
-def _cast_value(
+def _cast_value(  # pylint: disable=too-many-return-statements,too-many-branches
     key: str,
     value: str,
     cast_type: type,

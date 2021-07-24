@@ -1,12 +1,12 @@
 from os import environ
-from typing import Mapping, Optional
+from typing import Mapping
 
 
 def _check_prefix(
     string: str,
-    prefix: Optional[str],
+    prefix: str,
 ) -> str:
-    return string[len(prefix) :] if string.startswith(prefix) else string
+    return string[len(prefix) :] if string.startswith(prefix) else string  # noqa
 
 
 def _check_env_vars(

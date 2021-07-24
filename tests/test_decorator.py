@@ -6,14 +6,14 @@ from pathlib import Path
 from typing import Any, Dict, List, Union
 from uuid import UUID
 
-from dataclasses_settings.decorator import dataclass_settings, env_settings, read_env_vars
+from dataclass_settings.decorator import dataclass_settings, env_settings, read_env_vars
 
 
 def test_read_env_vars():
-    vars = read_env_vars(
+    env_vars = read_env_vars(
         prefix="test_",
     )
-    assert vars
+    assert env_vars
 
 
 def test_decorator(
@@ -41,7 +41,7 @@ def test_decorator_with_str(
 
 
 def test_decorator_with_bool(
-    test_env_vars: Dict[str, str],
+    test_env_vars: Dict[str, str],  # pylint: disable=unused-argument
 ) -> None:
     @env_settings(prefix="test_")
     class Settings:
@@ -149,7 +149,7 @@ def test_decorator_with_dict(
 
 
 def test_decorator_with_union(
-    test_env_vars: Dict[str, str],
+    test_env_vars: Dict[str, str],  # pylint: disable=unused-argument
 ) -> None:
 
     try:
@@ -165,7 +165,7 @@ def test_decorator_with_union(
 
 
 def test_decorator_with_path(
-    test_env_vars: Dict[str, str],
+    test_env_vars: Dict[str, str],  # pylint: disable=unused-argument
 ) -> None:
     @env_settings(prefix="test_")
     class Settings:
@@ -176,7 +176,7 @@ def test_decorator_with_path(
 
 
 def test_decorator_with_unknown_type(
-    test_env_vars: Dict[str, str],
+    test_env_vars: Dict[str, str],  # pylint: disable=unused-argument
 ) -> None:
 
     try:
@@ -184,6 +184,7 @@ def test_decorator_with_unknown_type(
         @env_settings(prefix="test_")
         class Settings:
             env_int: UUID
+
         settings = Settings()
         assert False, settings.env_int
     except ValueError:
