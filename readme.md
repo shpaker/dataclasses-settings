@@ -50,7 +50,7 @@ Install using `pip install dataclass-settings -U`.
     {'debug': True, 'port': 8080, 'ruleset_path': PosixPath('ruleset.yaml')}
     ```
     
-1. Also you can redifine some settings in runtime and create new instance of Settings:
+1. Also you can redefine some values in runtime and create new instance of Settings:
 
     ```python
     settings = Settings(port=80)
