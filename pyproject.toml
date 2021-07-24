@@ -44,8 +44,8 @@ version = "0.1.0"
 description = "Oversimplified decorator for settings management with built-in dataclasses superpowers."
 authors = ["Aleksandr Shpak <shpaker@gmail.com>"]
 readme = "readme.md"
-homepage = "https://github.com/shpaker/dataclasses-settings"
-repository = "https://github.com/shpaker/dataclasses-settings"
+homepage = "https://github.com/shpaker/dataclass-settings"
+repository = "https://github.com/shpaker/dataclass-settings"
 
 [tool.poetry.dependencies]
 python = "^3.7"
