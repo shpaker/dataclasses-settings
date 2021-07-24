@@ -33,10 +33,11 @@ Install using `pip install dataclass-settings -U`.
         ruleset_path: Optional[Path] = None
     ```
 
-1. Use this with lru_cache
+1. Use this with lru_cache:
 
     ```python
     from functools import lru_cache
+
 
     @lru_cache()
     def get_setting():
