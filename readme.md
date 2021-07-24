@@ -2,6 +2,9 @@
 
 Oversimplified decorator for settings management (via environment variables) with built in dataclasses superpowers.
 
+[![PyPI version](https://badge.fury.io/py/dataclass-settings.svg)](https://badge.fury.io/py/dataclass-settings)
+[![Test](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+
 ## Installation
 
 Install using `pip install dataclass-settings -U`.
@@ -20,26 +23,29 @@ Install using `pip install dataclass-settings -U`.
 
     ```python
     from pathlib import Path
-    from typing import Optional
 
     from dataclass_settings import dataclass_settings
 
 
     @dataclass_settings(prefix="app_", frozen=True)
     class Settings:
-        host: str = "0.0.0.0"
         port: int
         debug: bool = False
-        ruleset_path: Optional[Path] = None
+        ruleset_path: Path = None
     ```
 
-1. Use this with lru_cache:
+1. Check result:
 
     ```python
-    from functools import lru_cache
+    from dataclasses import asdict
 
+    settings = get_settings()
+    settings_dict = asdict(settings)
+    print(settings_dict)
+    ```
 
-    @lru_cache()
-    def get_setting():
-        return Settings()
+    Output:
+
+    ```python
+    {'debug': True, 'port': 8080, 'ruleset_path': PosixPath('ruleset.yaml')}
     ```
