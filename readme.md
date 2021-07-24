@@ -39,7 +39,7 @@ Install using `pip install dataclass-settings -U`.
     ```python
     from dataclasses import asdict
 
-    settings = get_settings()
+    settings = Settings()
     settings_dict = asdict(settings)
     print(settings_dict)
     ```
