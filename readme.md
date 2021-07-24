@@ -29,7 +29,7 @@ Install using `pip install dataclass-settings -U`.
     class Settings:
         host: str = "0.0.0.0"
         port: int
-        debug: bool = True
+        debug: bool = False
         ruleset_path: Optional[Path] = None
     ```
 
