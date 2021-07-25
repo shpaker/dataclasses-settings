@@ -7,7 +7,7 @@ Oversimplified decorator for settings management (via environment variables) wit
 
 ## Installation
 
-Install using `pip install dataclass-settings -U`.
+Install using `pip install git+https://github.com/shpaker/dataclasses-settings.git -U`.
 
 ## Usage
 
@@ -19,13 +19,12 @@ Install using `pip install dataclass-settings -U`.
     export APP_RULESET_PATH=./ruleset.yaml
     ```
 
-1. Define class for settings of your with defaults values app:
+1. Define class for settings with defaults values:
 
     ```python
     from pathlib import Path
 
     from dataclasses_settings import dataclass_settings
-
 
     @dataclass_settings(prefix="app_", frozen=True)
     class Settings:
@@ -61,5 +60,27 @@ Install using `pip install dataclass-settings -U`.
     Output:
 
     ```python
-    {'port': 80, 'debug': True, 'ruleset_path': PosixPath('ruleset.yaml')}
+    {'debug': True, 'port': 80, 'ruleset_path': PosixPath('ruleset.yaml')}
+    ```
+
+## `.env` support:
+
+1. Should install python-dotenv:
+
+    ```shell
+    pip install python-dotenv
+    ```
+
+1. ... or you can install `dataclasses-settings` with `dotenv` extra-package:
+
+    ```shell
+    pip install git+https://github.com/shpaker/dataclasses-settings.git@dotenv#egg=dataclasses-settings[dotenv] -U"
+    ```
+
+2. Finally define settings with `dotenv_path` argument:
+
+    ```python
+    @dataclass_settings(prefix="app_", dotenv_path=".env")
+    class Settings:
+        ...
     ```

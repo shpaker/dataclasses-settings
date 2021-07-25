@@ -1,5 +1,6 @@
 from os import environ
-from typing import Mapping
+from pathlib import Path
+from typing import Dict, Mapping
 
 
 def _check_prefix(
@@ -16,15 +17,40 @@ def _check_env_vars(
 ) -> Mapping[str, str]:
     if not case_sensitive:
         prefix = prefix.lower()
-        env_vars = {k.lower(): v for k, v in env_vars.items()}
+        env_vars = dict((k.lower(), v) for k, v in env_vars.items())
     if prefix:
-        env_vars = {_check_prefix(k, prefix): v for k, v in env_vars.items() if k.startswith(prefix)}
+        env_vars = dict((_check_prefix(k, prefix), v) for k, v in env_vars.items() if k.startswith(prefix))
+    return env_vars
+
+
+def read_vars(
+    dotenv_path: Path = None,
+    encoding: str = None,
+) -> Dict[str, str]:
+    env_vars: Dict[str, str] = dict()
+    if dotenv_path:
+        encoding = encoding or "utf8"
+        env_vars = read_dotenv_vars(dotenv_path, encoding)
+    env_vars.update(dict(environ))
     return env_vars
 
 
 def read_env_vars(
-    prefix: str = "",
+    prefix: str = None,
     case_sensitive: bool = False,
+    dotenv_path: Path = None,
+    dotenv_encoding: str = None,
 ) -> Mapping[str, str]:
-    env_vars: Mapping[str, str] = dict(environ)
+    env_vars = read_vars(dotenv_path, dotenv_encoding)
     return _check_env_vars(env_vars, prefix, case_sensitive)
+
+
+def read_dotenv_vars(
+    dotenv_path: Path,
+    dotenv_encoding: str,
+) -> Dict[str, str]:
+    try:
+        from dotenv import dotenv_values  # pylint: disable=import-outside-toplevel
+    except ImportError as err:
+        raise ImportError("Should install 'python-dotenv' package") from err
+    return dotenv_values(dotenv_path, encoding=dotenv_encoding)
