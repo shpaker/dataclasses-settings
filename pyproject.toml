@@ -40,7 +40,7 @@ extension-pkg-whitelist = "pydantic"
 
 [tool.poetry]
 name = "dataclasses-settings"
-version = "0.1.0"
+version = "0.2.0"
 description = "Oversimplified decorator for settings management with built-in dataclasses superpowers."
 authors = ["Aleksandr Shpak <shpaker@gmail.com>"]
 readme = "readme.md"
