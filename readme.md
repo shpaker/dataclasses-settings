@@ -1,4 +1,4 @@
-# dataclass-settings
+# dataclasses-settings
 
 Oversimplified decorator for settings management (via environment variables) with built in dataclasses superpowers.
 
@@ -24,7 +24,7 @@ Install using `pip install dataclass-settings -U`.
     ```python
     from pathlib import Path
 
-    from dataclass_settings import dataclass_settings
+    from dataclasses_settings import dataclass_settings
 
 
     @dataclass_settings(prefix="app_", frozen=True)

@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
-from dataclass_settings.cast import _cast_value
-from dataclass_settings.env import read_env_vars
+from dataclasses_settings.cast import _cast_value
+from dataclasses_settings.env import read_env_vars
 
 
 def env_settings(

@@ -39,7 +39,7 @@ indent-string = "    "
 extension-pkg-whitelist = "pydantic"
 
 [tool.poetry]
-name = "dataclass-settings"
+name = "dataclasses-settings"
 version = "0.1.0"
 description = "Oversimplified decorator for settings management with built-in dataclasses superpowers."
 authors = ["Aleksandr Shpak <shpaker@gmail.com>"]
