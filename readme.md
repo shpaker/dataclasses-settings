@@ -2,7 +2,7 @@
 
 Oversimplified decorator for settings management (via environment variables) with built in dataclasses superpowers.
 
-[![PyPI version](https://badge.fury.io/py/dataclass-settings.svg)](https://badge.fury.io/py/dataclass-settings)
+[![PyPI version](https://badge.fury.io/py/dataclasses-settings.svg)](https://badge.fury.io/py/dataclasses-settings)
 [![Test](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 ## Installation
