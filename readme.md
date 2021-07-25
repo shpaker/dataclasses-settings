@@ -63,8 +63,24 @@ Install using `pip install git+https://github.com/shpaker/dataclasses-settings.g
     {'debug': True, 'port': 80, 'ruleset_path': PosixPath('ruleset.yaml')}
     ```
 
-## Features:
+## .env files support:
 
-- [x] env vars
-- [x] configuration via values in dotenv file
-  Should install dataclasses-settings with extra-package `pip install "git+https://github.com/shpaker/dataclasses-settings.git#egg=project [dotenv]"`
+1. Should install python-dotenv:
+
+    ```shell
+    pip install python-dotenv
+    ```
+
+1. ... or you can install `dataclasses-settings` with `dotenv` extra-package:
+
+    ```shell
+    pip install git+https://github.com/shpaker/dataclasses-settings.git@dotenv#egg=dataclasses-settings[dotenv]"
+    ```
+
+2. Finally define settings with `dotenv_path` argument:
+
+    ```python
+    @dataclass_settings(prefix="app_", dotenv_path=".env")
+    class Settings:
+        ...
+    ```

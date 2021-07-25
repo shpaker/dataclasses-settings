@@ -27,10 +27,12 @@ def read_vars(
     dotenv_path: Path = None,
     encoding: str = None,
 ) -> Dict[str, str]:
+    env_vars: Dict[str, str] = dict()
     if dotenv_path:
         encoding = encoding or "utf8"
-        return read_dotenv_vars(dotenv_path, encoding)
-    return dict(environ)
+        env_vars = read_dotenv_vars(dotenv_path, encoding)
+    env_vars.update(dict(environ))
+    return env_vars
 
 
 def read_env_vars(
