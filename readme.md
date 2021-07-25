@@ -67,4 +67,4 @@ Install using `pip install git+https://github.com/shpaker/dataclasses-settings.g
 
 - [x] env vars
 - [x] configuration via values in dotenv file
-  Should install dataclasses-settings with extra-package `pip install git+https://github.com/shpaker/dataclasses-settings.git[dotenv]`
+  Should install dataclasses-settings with extra-package `pip install "git+https://github.com/shpaker/dataclasses-settings.git#egg=project [dotenv]"`
