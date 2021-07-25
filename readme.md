@@ -7,7 +7,7 @@ Oversimplified decorator for settings management (via environment variables) wit
 
 ## Installation
 
-Install using `pip install dataclass-settings -U`.
+Install using `pip install dataclasses-settings -U`.
 
 ## Usage
 
@@ -25,7 +25,6 @@ Install using `pip install dataclass-settings -U`.
     from pathlib import Path
 
     from dataclasses_settings import dataclass_settings
-
 
     @dataclass_settings(prefix="app_", frozen=True)
     class Settings:
