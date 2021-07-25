@@ -1,12 +1,12 @@
 import json
-from dataclasses import is_dataclass
+from dataclasses import field, is_dataclass
 from datetime import datetime, timedelta
 from enum import Enum
 from pathlib import Path
 from typing import Any, Dict, List, Union
 from uuid import UUID
 
-from dataclasses_settings.decorator import dataclass_settings, env_settings
+from dataclasses_settings.decorator import dataclass_settings
 from dataclasses_settings.env import read_env_vars
 
 
@@ -20,19 +20,29 @@ def test_read_env_vars():
 def test_decorator(
     test_env_vars: Dict[str, str],
 ) -> None:
-    @env_settings
+    @dataclass_settings
     class Settings:
         test_env_key: str
 
     settings = Settings()
-    assert not is_dataclass(settings)
+    assert settings.test_env_key == test_env_vars["test_env_key"]
+
+
+def test_decorator_with_field(
+    test_env_vars: Dict[str, str],
+) -> None:
+    @dataclass_settings
+    class Settings:
+        test_env_key: str = field(default="test")
+
+    settings = Settings()
     assert settings.test_env_key == test_env_vars["test_env_key"]
 
 
 def test_decorator_with_str(
     test_env_vars: Dict[str, str],
 ) -> None:
-    @env_settings(prefix="test_")
+    @dataclass_settings(prefix="test_")
     class Settings:
         env_int: str
 
@@ -44,7 +54,7 @@ def test_decorator_with_str(
 def test_decorator_with_bool(
     test_env_vars: Dict[str, str],  # pylint: disable=unused-argument
 ) -> None:
-    @env_settings(prefix="test_")
+    @dataclass_settings(prefix="test_")
     class Settings:
         env_bool: bool
 
@@ -56,7 +66,7 @@ def test_decorator_with_bool(
 def test_decorator_with_int(
     test_env_vars: Dict[str, str],
 ) -> None:
-    @env_settings(prefix="test_")
+    @dataclass_settings(prefix="test_")
     class Settings:
         env_int: int
 
@@ -68,7 +78,7 @@ def test_decorator_with_int(
 def test_decorator_with_float(
     test_env_vars: Dict[str, str],
 ) -> None:
-    @env_settings(prefix="test_")
+    @dataclass_settings(prefix="test_")
     class Settings:
         env_int: float
 
@@ -80,7 +90,7 @@ def test_decorator_with_float(
 def test_decorator_with_list(
     test_env_vars: Dict[str, str],
 ) -> None:
-    @env_settings(prefix="test_")
+    @dataclass_settings(prefix="test_")
     class Settings:
         env_list: list
 
@@ -91,7 +101,7 @@ def test_decorator_with_list(
 def test_decorator_with_datetime(
     test_env_vars: Dict[str, str],
 ) -> None:
-    @env_settings(prefix="test_")
+    @dataclass_settings(prefix="test_")
     class Settings:
         env_datetime: datetime
 
@@ -102,7 +112,7 @@ def test_decorator_with_datetime(
 def test_decorator_with_timedelta(
     test_env_vars: Dict[str, str],
 ) -> None:
-    @env_settings(prefix="test_")
+    @dataclass_settings(prefix="test_")
     class Settings:
         env_timedelta: timedelta
 
@@ -116,7 +126,7 @@ def test_decorator_with_str_enum(
     class TestStrEnum(str, Enum):
         TEST = test_env_vars["test_env_str_enum"]
 
-    @env_settings(prefix="test_")
+    @dataclass_settings(prefix="test_")
     class Settings:
         env_str_enum: TestStrEnum
 
@@ -130,7 +140,7 @@ def test_decorator_with_int_enum(
     class TestIntEnum(str, Enum):
         TEST = int(test_env_vars["test_env_int_enum"])
 
-    @env_settings(prefix="test_")
+    @dataclass_settings(prefix="test_")
     class Settings:
         env_int_enum: TestIntEnum
 
@@ -141,7 +151,7 @@ def test_decorator_with_int_enum(
 def test_decorator_with_dict(
     test_env_vars: Dict[str, str],
 ) -> None:
-    @env_settings(prefix="test_")
+    @dataclass_settings(prefix="test_")
     class Settings:
         env_dict: dict
 
@@ -155,7 +165,7 @@ def test_decorator_with_union(
 
     try:
 
-        @env_settings(prefix="test_")
+        @dataclass_settings(prefix="test_")
         class Settings:
             env_dict: Union[List[str], Dict[str, Any]]
 
@@ -168,7 +178,7 @@ def test_decorator_with_union(
 def test_decorator_with_path(
     test_env_vars: Dict[str, str],  # pylint: disable=unused-argument
 ) -> None:
-    @env_settings(prefix="test_")
+    @dataclass_settings(prefix="test_")
     class Settings:
         env_int: Path
 
@@ -182,7 +192,7 @@ def test_decorator_with_unknown_type(
 
     try:
 
-        @env_settings(prefix="test_")
+        @dataclass_settings(prefix="test_")
         class Settings:
             env_int: UUID
 
@@ -195,7 +205,7 @@ def test_decorator_with_unknown_type(
 def test_decorator_with_prefix(
     test_env_vars: Dict[str, str],
 ) -> None:
-    @env_settings(prefix="test_")
+    @dataclass_settings(prefix="test_")
     class Settings:
         env_key: str
 
