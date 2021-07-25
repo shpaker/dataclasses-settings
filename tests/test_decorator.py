@@ -6,7 +6,8 @@ from pathlib import Path
 from typing import Any, Dict, List, Union
 from uuid import UUID
 
-from dataclasses_settings.decorator import dataclass_settings, env_settings, read_env_vars
+from dataclasses_settings.decorator import dataclass_settings, env_settings
+from dataclasses_settings.env import read_env_vars
 
 
 def test_read_env_vars():
