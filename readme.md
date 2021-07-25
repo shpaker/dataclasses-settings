@@ -63,7 +63,7 @@ Install using `pip install git+https://github.com/shpaker/dataclasses-settings.g
     {'debug': True, 'port': 80, 'ruleset_path': PosixPath('ruleset.yaml')}
     ```
 
-## .env files support:
+## `.env` support:
 
 1. Should install python-dotenv:
 
