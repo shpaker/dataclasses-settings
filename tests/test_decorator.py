@@ -3,7 +3,7 @@ from dataclasses import field, is_dataclass
 from datetime import datetime, timedelta
 from enum import Enum
 from pathlib import Path
-from typing import Any, Dict, List, Union, Optional
+from typing import Any, Dict, List, Optional, Union
 from uuid import UUID
 
 from dataclasses_settings.decorator import dataclass_settings
@@ -68,14 +68,12 @@ def test_optional(
     assert settings.test_none is None
 
 
-def test_empty_optional(
-    test_env_vars: Dict[str, str],
-) -> None:
-
+def test_empty_optional() -> None:
     try:
         @dataclass_settings
         class Settings:
             test_env_key: Optional
+
         Settings()
         assert False
     except ValueError:
