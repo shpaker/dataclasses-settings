@@ -2,14 +2,15 @@ from datetime import datetime, timedelta
 from enum import Enum, IntEnum
 from json import loads
 from pathlib import Path
-from typing import Any, Union, get_origin
+from typing import Any, Union
 
 BOOL_TRUE_VALUES = ("+", "y", "yes", "true", "on")
 BOOL_FALSE_VALUES = ("-", "n", "no", "false", "off")
+NONE_VALUE = ("none", "null", "~", "")
 
 
-def _cast_value(  # pylint: disable=too-many-return-statements,too-many-branches
-    key: str,
+# pylint: disable=too-many-return-statements,too-many-branches
+def _cast_value(
     value: str,
     cast_type: type,
 ) -> Any:
@@ -19,17 +20,29 @@ def _cast_value(  # pylint: disable=too-many-return-statements,too-many-branches
     if cast_type in (int, float, Path):
         return cast_type(value)
 
-    if cast_type is bool:
-        if value.lower() in BOOL_TRUE_VALUES:
-            return True
-        if value.lower() in BOOL_FALSE_VALUES:
-            return False
-        raise ValueError(f"{key}: incorrect boolean value: {value}")
+    if cast_type is None or cast_type is type(None):  # noqa
+        if value.lower().strip() in NONE_VALUE:
+            return None
 
-    origin = get_origin(cast_type)
+    if cast_type is bool:
+        if value.lower().strip() in BOOL_TRUE_VALUES:
+            return True
+        if value.lower().strip() in BOOL_FALSE_VALUES:
+            return False
+        raise ValueError
+
+    try:
+        origin = cast_type.__origin__
+    except AttributeError:
+        origin = None
 
     if origin is Union:
-        raise ValueError(f"{key}: currently doesn't support Union types")
+        args = cast_type.__args__
+        for arg in args:
+            try:
+                return _cast_value(value, arg)
+            except ValueError:
+                ...
     if origin:
         cast_type = origin
 
@@ -51,4 +64,4 @@ def _cast_value(  # pylint: disable=too-many-return-statements,too-many-branches
     if cast_type is timedelta:
         return timedelta(seconds=int(value))
 
-    raise ValueError(f"{key}: type not yet supported: {cast_type}")
+    raise ValueError(f"Type not yet supported: {cast_type}")

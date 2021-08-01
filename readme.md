@@ -7,7 +7,17 @@ Oversimplified decorator for settings management (via environment variables) wit
 
 ## Installation
 
-Install using `pip install git+https://github.com/shpaker/dataclasses-settings.git -U`.
+### From PyPi
+
+```shell
+pip install dataclasses-settings -U
+```
+
+### Directly from github
+
+```shell
+pip install git+https://github.com/shpaker/dataclasses-settings.git -U
+```
 
 ## Usage
 
@@ -72,6 +82,8 @@ Install using `pip install git+https://github.com/shpaker/dataclasses-settings.g
     ```
 
 1. ... or you can install `dataclasses-settings` with `dotenv` extra-package:
+
+    Directly from github:
 
     ```shell
     pip install git+https://github.com/shpaker/dataclasses-settings.git@dotenv#egg=dataclasses-settings[dotenv] -U"
