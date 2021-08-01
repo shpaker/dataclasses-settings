@@ -39,9 +39,7 @@ def test_decorator_with_field(
     assert settings.test_env_key == test_env_vars["test_env_key"]
 
 
-def test_none(
-    test_env_vars: Dict[str, str],
-) -> None:
+def test_none() -> None:
     @dataclass_settings(prefix="test_")
     class Settings:
         none: None
@@ -61,7 +59,7 @@ def test_optional(
     assert settings.test_env_key == test_env_vars["test_env_key"]
 
     @dataclass_settings
-    class Settings:
+    class Settings:  # pylint: disable=function-redefined
         test_none: Optional[int]
 
     settings = Settings()
@@ -70,6 +68,7 @@ def test_optional(
 
 def test_empty_optional() -> None:
     try:
+
         @dataclass_settings
         class Settings:
             test_env_key: Optional
@@ -203,7 +202,6 @@ def test_decorator_with_dict(
 def test_decorator_with_union(
     test_env_vars: Dict[str, str],  # pylint: disable=unused-argument
 ) -> None:
-
     @dataclass_settings(prefix="test_")
     class Settings:
         env_dict: Union[int, float, Dict[str, Any], List[str]]

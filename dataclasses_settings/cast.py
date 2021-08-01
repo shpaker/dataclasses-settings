@@ -20,7 +20,7 @@ def _cast_value(
     if cast_type in (int, float, Path):
         return cast_type(value)
 
-    if cast_type is None or cast_type == type(None):
+    if cast_type is None or cast_type is type(None):  # noqa
         if value.lower().strip() in NONE_VALUE:
             return None
 
