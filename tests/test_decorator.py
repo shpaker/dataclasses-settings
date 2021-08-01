@@ -3,7 +3,7 @@ from dataclasses import field, is_dataclass
 from datetime import datetime, timedelta
 from enum import Enum
 from pathlib import Path
-from typing import Any, Dict, List, Union
+from typing import Any, Dict, List, Union, Optional
 from uuid import UUID
 
 from dataclasses_settings.decorator import dataclass_settings
@@ -37,6 +37,49 @@ def test_decorator_with_field(
 
     settings = Settings()
     assert settings.test_env_key == test_env_vars["test_env_key"]
+
+
+def test_none(
+    test_env_vars: Dict[str, str],
+) -> None:
+    @dataclass_settings(prefix="test_")
+    class Settings:
+        none: None
+
+    settings = Settings()
+    assert settings.none is None
+
+
+def test_optional(
+    test_env_vars: Dict[str, str],
+) -> None:
+    @dataclass_settings
+    class Settings:
+        test_env_key: Optional[str]
+
+    settings = Settings()
+    assert settings.test_env_key == test_env_vars["test_env_key"]
+
+    @dataclass_settings
+    class Settings:
+        test_none: Optional[int]
+
+    settings = Settings()
+    assert settings.test_none is None
+
+
+def test_empty_optional(
+    test_env_vars: Dict[str, str],
+) -> None:
+
+    try:
+        @dataclass_settings
+        class Settings:
+            test_env_key: Optional
+        Settings()
+        assert False
+    except ValueError:
+        pass
 
 
 def test_decorator_with_str(
@@ -163,16 +206,12 @@ def test_decorator_with_union(
     test_env_vars: Dict[str, str],  # pylint: disable=unused-argument
 ) -> None:
 
-    try:
+    @dataclass_settings(prefix="test_")
+    class Settings:
+        env_dict: Union[int, float, Dict[str, Any], List[str]]
 
-        @dataclass_settings(prefix="test_")
-        class Settings:
-            env_dict: Union[List[str], Dict[str, Any]]
-
-        Settings()
-        assert False
-    except ValueError:
-        pass
+    settings = Settings()
+    assert settings.env_dict == json.loads(test_env_vars["test_env_dict"])
 
 
 def test_decorator_with_path(

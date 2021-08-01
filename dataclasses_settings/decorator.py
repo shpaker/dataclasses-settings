@@ -1,9 +1,10 @@
-from dataclasses import Field, dataclass, field
+from dataclasses import dataclass, Field, field
 from pathlib import Path
-from typing import Any, MutableMapping, MutableSequence, MutableSet
+from typing import List, Dict, Tuple, MutableSequence, MutableSet, MutableMapping, Any
 
 from dataclasses_settings.cast import _cast_value
 from dataclasses_settings.env import read_env_vars
+from dataclasses_settings.exceptions import ValidationError
 
 MUTABLE_TYPES = (
     MutableSequence,
@@ -39,6 +40,9 @@ def dataclass_settings(
     dotenv_encoding: str = None,
     **kwargs,
 ):
+    if "frozen" not in kwargs:
+        kwargs["frozen"] = True
+
     def wrap(arg):
         env_vars = read_env_vars(
             prefix=prefix,
@@ -46,19 +50,25 @@ def dataclass_settings(
             dotenv_path=dotenv_path,
             dotenv_encoding=dotenv_encoding,
         )
+        errors: List[Tuple[str, str, str]] = list()
         for attr_key, attr_type in arg.__annotations__.items():
             if attr_key in env_vars:
-                value = _cast_value(
-                    attr_key,
-                    env_vars[attr_key],
-                    attr_type,
-                )
+                try:
+                    value = _cast_value(
+                        env_vars[attr_key],
+                        attr_type,
+                    )
+                except (TypeError, ValueError):
+                    errors.append((attr_key, env_vars[attr_key], "incorrect or unknown type"))
+                    continue
                 attr_value = _check_value(
                     value=value,
                     cls=arg,
                     attr_key=attr_key,
                 )
                 setattr(arg, attr_key, attr_value)
+        if errors:
+            raise ValidationError(errors)
         return dataclass(arg, **kwargs)
 
     if cls is None:

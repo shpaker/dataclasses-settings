@@ -12,6 +12,7 @@ def testing_env_vars_fixture() -> Dict[str, str]:
     return {
         "test_env_key": "env_value",
         "test_env_int": "1234567890",
+        "test_env_incorrect_int": "foo",
         "test_env_list": '[1, 2, "4"]',
         "test_env_dict": '{"foo": "bar"}',
         "test_env_datetime": "2005-08-09T18:31:42",
@@ -19,6 +20,7 @@ def testing_env_vars_fixture() -> Dict[str, str]:
         "test_env_int_enum": "999",
         "test_env_str_enum": "str_enum_value",
         "test_env_bool": "yes",
+        "test_none": "none",
     }
 
 
