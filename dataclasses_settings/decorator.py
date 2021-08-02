@@ -21,15 +21,17 @@ def _check_value(
     is_mutable = issubclass(type(value), MUTABLE_TYPES)
     try:
         attr_value = getattr(cls, attr_key)
-        if is_mutable:
-            if isinstance(attr_value, Field):
-                attr_value.default_factory = lambda: value
-                return attr_value
-            return field(default_factory=lambda: value)
-        attr_value.default = value if isinstance(attr_value, Field) else value
-        return attr_value
     except AttributeError:
-        return field(default_factory=lambda: value) if is_mutable else field(default=value)
+        if is_mutable:
+            return field(default_factory=lambda: value)
+        return field(default=value)
+    if is_mutable:
+        if isinstance(attr_value, Field):
+            attr_value.default_factory = lambda: value
+            return attr_value
+        return field(default_factory=lambda: value)
+    attr_value.default = value if isinstance(attr_value, Field) else value
+    return attr_value
 
 
 def dataclass_settings(
@@ -52,10 +54,18 @@ def dataclass_settings(
         )
         errors: List[Tuple[str, str, str]] = list()
         for attr_key, attr_type in arg.__annotations__.items():
-            if attr_key in env_vars:
+            key_alias = None
+            try:
+                attr_value = getattr(arg, attr_key)
+                if isinstance(attr_value, Field):
+                    key_alias = attr_value.metadata.get("alias")
+            except AttributeError:
+                pass
+
+            if (key_alias or attr_key) in env_vars:
                 try:
                     value = _cast_value(
-                        env_vars[attr_key],
+                        env_vars[key_alias or attr_key],
                         attr_type,
                     )
                 except (TypeError, ValueError):
