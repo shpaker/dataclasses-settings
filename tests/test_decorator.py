@@ -8,6 +8,7 @@ from uuid import UUID
 
 from dataclasses_settings.decorator import dataclass_settings
 from dataclasses_settings.env import read_env_vars
+from dataclasses_settings.params import field_params
 
 
 def test_read_env_vars():
@@ -37,6 +38,17 @@ def test_decorator_with_field(
 
     settings = Settings()
     assert settings.test_env_key == test_env_vars["test_env_key"]
+
+
+def test_decorator_with_alias(
+    test_env_vars: Dict[str, str],
+) -> None:
+    @dataclass_settings(prefix="test_")
+    class Settings:
+        some_field: str = field(default="test", metadata=field_params(alias="env_key"))
+
+    settings = Settings()
+    assert settings.some_field == test_env_vars["test_env_key"]
 
 
 def test_none() -> None:
